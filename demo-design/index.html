@@ -1,0 +1,659 @@
+<html>
+
+<head>
+    <title>
+        On-Time Reliability
+    </title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #F6F6F5;
+        }
+
+        .fixed-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 60px;
+            /* Adjust width as needed */
+            background-color: #f8f9fa;
+            /* Optional: background color */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10px;
+            /* Optional: padding */
+        }
+
+        .sidebar {
+            width: 80px;
+            background-color: #d97706;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+        }
+
+        .sidebar img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar i {
+            font-size: 24px;
+            color: white;
+            margin: 20px 0;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding-left: 70px;
+            padding-top: 70px;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 80px;
+            width: 100%;
+            height: 60px;
+            background-color: #ffffff;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .input-container input {
+            padding-left: 40px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            width: 328px;
+            /* Adjust based on icon size */
+        }
+
+        .prefix-icon {
+            position: absolute;
+            left: 10px;
+            /* Adjust based on desired spacing */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            /* Adjust based on icon size */
+            height: 20px;
+            /* Adjust based on icon size */
+        }
+
+        .header .date-info {
+            font-size: 12px;
+            color: #ff9800;
+        }
+
+        .header .date-info span {
+            color: #ff5722;
+        }
+
+        .header .icons i {
+            font-size: 20px;
+            color: #757575;
+            margin-left: 20px;
+        }
+
+        .content {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar-menu {
+            width: 250px;
+            background-color: white;
+            padding: 20px;
+            margin: 0;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .sidebar-menu h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu p {
+            font-size: 12px;
+            color: #757575;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-menu label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .sidebar-menu input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .main-section {
+            flex: 1;
+            padding: 20px;
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 12px;
+        }
+
+        .main-section h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .main-section p {
+            font-size: 14px;
+            color: #757575;
+            margin-bottom: 20px;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            width: calc(33.333% - 20px);
+        }
+
+        .card h3 {
+            font-size: 14px;
+            font-weight: 470;
+            margin-bottom: 10px;
+            padding-left: 14px;
+            padding-right: 14px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .card p {
+            font-size: 14px;
+            margin: 5px 0;
+            padding-left: 14px;
+            padding-right: 14px;
+        }
+
+
+        .container {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            display: inline-block;
+            font-size: 12px;
+        }
+
+        .item {
+            margin-bottom: 4px;
+        }
+
+        .highlight {
+            color: #d35400;
+        }
+
+        .topbar-icon-button-bar {
+            margin-left: 20px;
+            display: flex;
+            flex-direction: row;
+            height: 40px;
+            align-items: center;
+            margin-top: 6px;
+        }
+
+        .topbar-button {
+            background-color: #E7E7E6;
+            padding: 10px 10px;
+            border-radius: 12px;
+            margin-left: 10px;
+        }
+
+        .checkbox-container {
+            display: block;
+            position: relative;
+            padding-left: 26px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 22px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 14px;
+            height: 14px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+
+        .checkbox-container:hover input~.checkmark {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+        }
+
+        .checkbox-container input:checked~.checkmark {
+            background-color: #65AD45;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the checkmark when checked */
+        .checkbox-container input:checked~.checkmark:after {
+            display: block;
+        }
+
+        /* Style the checkmark/indicator */
+        .checkbox-container .checkmark:after {
+            left: 4px;
+            top: 1px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+
+        .top-header-container {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .top-header-searchbar {
+            align-items: start;
+            flex: 20%;
+        }
+
+        .top-header-buttonbar {
+            display: flex;
+            flex-direction: row;
+            flex: 70%;
+            flex-wrap: wrap;
+        }
+
+
+        /* Mobile styles */
+        @media only screen and (max-width: 480px) {
+            /* styles for mobile phones */
+        }
+
+        /* Tablet styles */
+        @media only screen and (min-width: 481px) and (max-width: 1024px) {
+
+            /* styles for tablets */
+
+            .top-header-container {
+                display: flex;
+                flex-direction: row;
+            }
+
+            .input-container input {
+                padding-left: 40px;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                border: 1px solid #e0e0e0;
+                border-radius: 12px;
+                /* Adjust based on icon size */
+            }
+
+
+            .top-header-searchbar {
+                align-items: start;
+                flex: 50%;
+            }
+
+            .top-header-buttonbar {
+                display: flex;
+                flex-direction: row;
+                flex: 50%;
+                flex-wrap: wrap;
+                justify-content: space-evenly;
+            }
+
+            .topbar-icon-button-bar {
+                margin-left: 20px;
+                margin-right: 20px;
+                display: flex;
+                flex-direction: row;
+                height: 40px;
+                align-items: center;
+                margin-top: 6px;
+            }
+
+
+            .container {
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                padding: 10px;
+                display: inline-block;
+                font-size: 12px;
+                display: none;
+            }
+        }
+
+        /* Desktop styles */
+        @media only screen and (min-width: 1025px) and (max-width: 1280px) {
+
+            /* styles for desktop monitors */
+
+
+
+        }
+
+        /* 4K and high-resolution display styles */
+        @media only screen and (min-width: 1921px) {
+            /* styles for 4K and high-resolution displays */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar fixed-sidebar">
+        <img alt="Logo" height="50" src="assets/logo.svg" width="50" />
+        <img alt="Dashboard" src="assets/Dashbord.svg" style="width: 24px;height: 24px;" />
+        <img alt="Dashboard" src="assets/map.svg" style="width: 24px;height: 24px;" />
+        <img alt="Dashboard" src="assets/route-square.svg" style="width: 24px;height: 24px;" />
+        <img alt="Dashboard" src="assets/User.svg" style="width: 24px;height: 24px;" />
+        <img alt="Dashboard" src="assets/Location.svg" style="width: 24px;height: 24px;" />
+        <div style="height: 100%;"></div>
+        <img alt="Dashboard" src="assets/logout.svg" style="width: 24px;height: 24px;" />
+        <img alt="Dashboard" src="assets/setting-2.svg" style="width: 24px;height: 24px;" />
+    </div>
+    <div class="main-content">
+        <div class="header top-header-container">
+            <div class="input-container top-header-searchbar">
+                <img src="assets/Icons.svg" alt="Search Icon" class="prefix-icon" />
+                <input placeholder="Search..." type="text" />
+            </div>
+            <div class="container">
+                <div class="item">
+                    <span>Date: 1 to 31-August *</span>
+                    <span class="highlight">Scheduled Trips:24992 *</span>
+                    <span>Scheduled Trips for OTR:21363 *</span>
+                    <span class="highlight">Start Tracked Trips:99.35 *</span>
+                    <span>Start OTR:95.18 *</span>
+                    <span class="highlight">Mid Tracked Trips</span>
+                </div>
+                <div class="item">
+                    <span>Date: 1 to 31-August *</span>
+                    <span class="highlight">Scheduled Trips:24992 *</span>
+                    <span>Scheduled Trips for OTR:21363 *</span>
+                    <span class="highlight">Start Tracked Trips:99.35 *</span>
+                    <span>Start OTR:95.18 *</span>
+                    <span class="highlight">Mid Tracked Trips</span>
+                </div>
+            </div>
+            <div class="topbar-icon-button-bar">
+                <div class="topbar-button">
+                    <img src="assets/receipt-minus.svg" />
+                </div>
+                <div class="topbar-button">
+                    <img src="assets/notification.svg" />
+                </div>
+                <div class="topbar-button">
+                    <img src="assets/profile.svg" />
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="sidebar-menu">
+                <h2>
+                    Change Cards
+                </h2>
+                <p>
+                    Maximum selection limit reached (6 checkboxes allowed).
+                </p>
+                <label class="checkbox-container">Start OTR
+                    <input type="checkbox" checked="checked">
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-container">Start OTR Watchlist
+                    <input type="checkbox" checked="checked">
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-container">Mid OTR
+                    <input type="checkbox" checked="checked">
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-container">Mid OTR Watchlist
+                    <input type="checkbox" checked="checked">
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-container">End OTR
+                    <input type="checkbox" checked="checked">
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-container">End OTR Watchlist
+                    <input type="checkbox" checked="checked">
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-container">All Early
+                    <input type="checkbox" />
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-container">All Late
+                    <input type="checkbox" />
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-container">Shift Position &amp; Mid
+                    <input type="checkbox" />
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-container">Live Traffic
+                    <input type="checkbox" />
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-container">BusTrak Status
+                    <input type="checkbox" />
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-container">Depot Depart Watchlist
+                    <input type="checkbox" />
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-container">Not Tracking
+                    <input type="checkbox" />
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="main-section">
+                <h2>
+                    On-Time Reliability
+                </h2>
+                <p>
+                    OTR ensures buses run on schedule, boosting efficiency and satisfaction.
+                </p>
+                <div class="card-container">
+                    <div class="card">
+                        <h3>
+                            Start OTR
+                        </h3>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>
+                            Start OTR Watchlist
+                        </h3>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>
+                            Mid OTR
+                        </h3>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>
+                            Mid OTR Watchlist
+                        </h3>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>
+                            End OTR
+                        </h3>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>
+                            End OTR Watchlist
+                        </h3>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                        <p>
+                            17 RV : 31-5 Arr-111
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
